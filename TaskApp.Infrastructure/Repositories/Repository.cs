@@ -12,7 +12,7 @@ public class Repository<T> : IRepository<T> where T : class
   /// <summary>
   /// The DbContext
   /// </summary>
-  private AppDbContext _context;
+  protected AppDbContext _context;
   /// <summary>
   /// A method to add to the DB a new TaskApp(Tasks), Users, SubTask, Categories or Tag
   /// </summary>
