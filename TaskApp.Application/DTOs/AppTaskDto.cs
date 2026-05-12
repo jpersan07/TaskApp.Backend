@@ -1,0 +1,15 @@
+using TaskStatus = TaskApp.Domain.Enums.TaskStatus;
+
+namespace TaskApp.Application.DTOs;
+
+public class AppTaskDto
+{
+  public string UserName { get; set; } = string.Empty;
+  public string Title { get; set; } = string.Empty;
+  public string? Description { get; set; }
+  public DateTime? DueDate { get; set; }
+  public TaskStatus? Status { get; set; } = TaskStatus.NonStarted;
+  public string? CategoryName { get; set; }
+  public ICollection<string>? SubTask { get; set; }
+  public ICollection<string>? Tags { get; set; }
+}
