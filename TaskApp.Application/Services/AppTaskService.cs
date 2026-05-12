@@ -13,9 +13,11 @@ public class AppTaskService : IAppTaskService
     _repository = repository;
   }
 
-  public Task BulkDelete(string userId)
+  public async Task BulkDelete(string userId)
   {
-    throw new NotImplementedException();
+    var allTasks = await _repository.GetAllByUserId(userId);
+    foreach (var item in allTasks)
+      await _repository.Delete(item.Id);
   }
 
   public async Task<AppTaskDto> CreateTask(CreateAppTaskDto newTask, string userId)
@@ -42,9 +44,9 @@ public class AppTaskService : IAppTaskService
     };
   }
 
-  public Task DeleteTask(int id)
+  public async Task DeleteTask(int id)
   {
-    throw new NotImplementedException();
+    await _repository.Delete(id);
   }
 
   public async Task<IEnumerable<AppTaskDto>> GetAllTaskUser(string userId)
@@ -105,7 +107,7 @@ public class AppTaskService : IAppTaskService
       if(uptTask.Tags != null)
         task.Tags = uptTask.Tags
       */
-      await _repository.Add(task);
+      await _repository.Update(task);
     }
   }
 }
