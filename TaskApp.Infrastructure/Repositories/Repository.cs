@@ -55,6 +55,17 @@ public class Repository<T> : IRepository<T> where T : class
   {
     return await _context.Set<T>().FindAsync(id);
   }
+/// <summary>
+/// A method to update a Task
+/// </summary>
+/// <param name="entity">The type of data we are going to work with</param>
+/// <returns></returns>
+  public async Task Update(T entity)
+  {
+    _context.Set<T>().Update(entity);
+    await _context.SaveChangesAsync();
+  }
+
   /// <summary>
   /// The starter of the DB
   /// </summary>
