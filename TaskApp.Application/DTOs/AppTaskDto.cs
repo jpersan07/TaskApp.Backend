@@ -8,7 +8,7 @@ public class AppTaskDto
   public string Title { get; set; } = string.Empty;
   public string? Description { get; set; }
   public DateTime? DueDate { get; set; }
-  public TaskStatus Status { get; set; } = TaskStatus.NonStarted;
+  public TaskStatus? Status { get; set; } = TaskStatus.NonStarted;
   public string? CategoryName { get; set; }
   public ICollection<string>? SubTask { get; set; }
   public ICollection<string>? Tags { get; set; }
