@@ -49,7 +49,7 @@ public class AppTaskService : IAppTaskService
     await _repository.Delete(id);
   }
 
-  public async Task<IEnumerable<AppTaskDto>> GetAllTaskUser(string userId)
+  public async Task<IEnumerable<AppTaskDto>> GetAllTask(string userId)
   {
     var tasks = await _repository.GetAllByUserId(userId);
     return tasks.Select(task => new AppTaskDto
