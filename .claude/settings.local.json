@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Remove-Item \"TaskApp.Application\\\\Services\\\\AppTaskService.cs\")",
+      "Bash(git merge *)",
+      "Bash(rm *)",
+      "Bash(New-Item *)",
+      "PowerShell(New-Item *)"
+    ]
+  }
+}
