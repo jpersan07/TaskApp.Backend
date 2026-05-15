@@ -3,6 +3,7 @@ using TaskApp.Application.Services;
 using TaskApp.Domain.Interfaces;
 using TaskApp.Infrastructure;
 using TaskApp.Infrastructure.Repositories;
+using TaskApp.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ISubTaskService, SubTaskService>();
 builder.Services.AddScoped<ISubTaskRepository, SubTaskRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 var app = builder.Build();
