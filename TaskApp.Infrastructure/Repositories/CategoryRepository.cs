@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using TaskApp.Domain.Entities;
 using TaskApp.Domain.Interfaces;
@@ -13,6 +14,13 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
 
   public async Task<IEnumerable<Category>> GetAllByUserId(string userId)
   {
-    return await _context.Set<Category>().Where(x => x.UserId == userId).ToListAsync();
+    try
+    {
+      return await _context.Set<Category>().Where(x => x.UserId == userId).ToListAsync();
+    }
+    catch (DbException ex)
+    {
+      throw new Exception($"Error getting all categories from  user'{userId}' from database", ex);
+    }
   }
 }
