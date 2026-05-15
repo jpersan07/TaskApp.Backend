@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TaskApp.Application.Services;
+using TaskApp.Domain.Entities;
 using TaskApp.Domain.Interfaces;
 using TaskApp.Infrastructure;
 using TaskApp.Infrastructure.Repositories;
@@ -21,7 +23,7 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ISubTaskService, SubTaskService>();
 builder.Services.AddScoped<ISubTaskRepository, SubTaskRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 
