@@ -13,69 +13,110 @@ public class CategoryService : ICategoryService
   }
   public async Task BulkDelete(string userId)
   {
-    var allTasks = await _repository.GetAllByUserId(userId);
-    foreach (var item in allTasks)
-      await _repository.Delete(item.Id);
-
+    try
+    {
+      var allTasks = await _repository.GetAllByUserId(userId);
+      foreach (var item in allTasks)
+        await _repository.Delete(item.Id);
+    }
+    catch (Exception ex)
+    {
+      throw new Exception($"Error deleting all categories for user '{userId}'", ex);
+    }
   }
 
   public async Task<CategoryDto> CreateCategory(CreateCategoryDto newCat, string userId)
   {
-    Category _newCat = new Category
+    try
     {
-      Name = newCat.Name
-    };
+      Category _newCat = new Category
+      {
+        Name = newCat.Name
+      };
 
-    await _repository.Add(_newCat);
+      await _repository.Add(_newCat);
 
-    return new CategoryDto
+      return new CategoryDto
+      {
+        Id = _newCat.Id,
+        Name = _newCat.Name,
+        UserId = userId
+      };
+    }
+    catch (Exception ex)
     {
-      Id = _newCat.Id,
-      Name = _newCat.Name,
-      UserId = userId
-    };
+      throw new Exception($"Error creating the new category '{newCat.Name}'", ex);
+    }
   }
 
   public async Task DeleteCat(int id)
   {
-    await _repository.Delete(id);
+    try
+    {
+      await _repository.Delete(id);
+    }
+    catch (Exception ex)
+    {
+      throw new Exception($"Error deleting the category with id '{id}'", ex);
+    }
   }
 
   public async Task<IEnumerable<CategoryDto>> GetAllCat(string userId)
   {
-    var cats = await _repository.GetAllByUserId(userId);
-    return cats.Select(cat => new CategoryDto
+    try
     {
-      Id = cat.Id,
-      Name = cat.Name,
-      UserId = userId
-    });
+      var cats = await _repository.GetAllByUserId(userId);
+      return cats.Select(cat => new CategoryDto
+      {
+        Id = cat.Id,
+        Name = cat.Name,
+        UserId = userId
+      });
+    }
+    catch (Exception ex)
+    {
+      throw new Exception($"Error retrieving all categories for user '{userId}'", ex);
+    }
   }
 
   public async Task<CategoryDto?> GetCatById(int id)
   {
-    var cat = await _repository.GetById(id);
+    try
+    {
+      var cat = await _repository.GetById(id);
 
-    if (cat != null)
-      return new CategoryDto
-      {
-        Id = cat.Id,
-        Name = cat.Name,
-        UserId = cat.UserId
-      };
-    else
-      return null;
+      if (cat != null)
+        return new CategoryDto
+        {
+          Id = cat.Id,
+          Name = cat.Name,
+          UserId = cat.UserId
+        };
+      else
+        return null;
+    }
+    catch (Exception ex)
+    {
+      throw new Exception($"Error retrieving the category with id '{id}'", ex);
+    }
   }
 
   public async Task UpdateCat(UpdateCategoryDto uptCat, int id)
   {
-    var cat = await _repository.GetById(id);
-
-    if (cat != null)
+    try
     {
-      if (uptCat.Name != null)
-        cat.Name = uptCat.Name;
-      await _repository.Update(cat);
+      var cat = await _repository.GetById(id);
+
+      if (cat != null)
+      {
+        if (uptCat.Name != null)
+          cat.Name = uptCat.Name;
+        await _repository.Update(cat);
+      }
+    }
+    catch (Exception ex)
+    {
+      throw new Exception($"Error updating the category with id '{id}'", ex);
     }
   }
 }
