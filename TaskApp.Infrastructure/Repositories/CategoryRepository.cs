@@ -12,6 +12,12 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
   {
   }
 
+  /// <summary>
+  /// A method to get all categories belonging to a user
+  /// </summary>
+  /// <param name="userId">The id of the user whose categories are going to be retrieved</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task<IEnumerable<Category>> GetAllByUserId(string userId)
   {
     try

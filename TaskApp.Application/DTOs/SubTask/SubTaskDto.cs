@@ -1,5 +1,8 @@
 namespace TaskApp.Application.DTOs;
 
+/// <summary>
+/// DTO representing a subtask returned to the client
+/// </summary>
 public class SubTaskDto
 {
   public int Id { get; set; } 

@@ -11,6 +11,12 @@ public class CategoryService : ICategoryService
   {
     _repository = repository;
   }
+  /// <summary>
+  /// A method to bulk delete all categories from a user
+  /// </summary>
+  /// <param name="userId">The user that is going to get all the categories deleted</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task BulkDelete(string userId)
   {
     try
@@ -25,6 +31,13 @@ public class CategoryService : ICategoryService
     }
   }
 
+  /// <summary>
+  /// A method to create a new category from a Category obj
+  /// </summary>
+  /// <param name="newCat">The Category obj that is going to be created</param>
+  /// <param name="userId">The owner of the category</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task<CategoryDto> CreateCategory(CreateCategoryDto newCat, string userId)
   {
     try
@@ -49,6 +62,12 @@ public class CategoryService : ICategoryService
     }
   }
 
+  /// <summary>
+  /// A method to delete a category by its id
+  /// </summary>
+  /// <param name="id">The id of the category that is going to be deleted</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task DeleteCat(int id)
   {
     try
@@ -61,6 +80,12 @@ public class CategoryService : ICategoryService
     }
   }
 
+  /// <summary>
+  /// A method to get all categories from a user by its userId
+  /// </summary>
+  /// <param name="userId">The owner of all the categories that are going to be retrieved</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task<IEnumerable<CategoryDto>> GetAllCat(string userId)
   {
     try
@@ -79,6 +104,12 @@ public class CategoryService : ICategoryService
     }
   }
 
+  /// <summary>
+  /// A method to get a category by its id
+  /// </summary>
+  /// <param name="id">The id of the category you want to retrieve</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task<CategoryDto?> GetCatById(int id)
   {
     try
@@ -101,6 +132,13 @@ public class CategoryService : ICategoryService
     }
   }
 
+  /// <summary>
+  /// A method to update a category by a new Category obj and its id
+  /// </summary>
+  /// <param name="uptCat">The new Category properties in a new obj</param>
+  /// <param name="id">The id of the category wanting to update</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task UpdateCat(UpdateCategoryDto uptCat, int id)
   {
     try

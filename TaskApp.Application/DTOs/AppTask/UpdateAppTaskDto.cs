@@ -3,6 +3,9 @@ using TaskStatus = TaskApp.Domain.Enums.TaskStatus;
 
 namespace TaskApp.Application.DTOs;
 
+/// <summary>
+/// DTO with optional fields to update an existing task
+/// </summary>
 public class UpdateAppTaskDto
 {
   public string? Title { get; set; }
