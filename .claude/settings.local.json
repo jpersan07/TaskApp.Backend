@@ -10,7 +10,10 @@
       "PowerShell(gh pr *)",
       "Bash(git checkout *)",
       "Bash(git pull *)",
-      "Bash(git branch *)"
+      "Bash(git branch *)",
+      "PowerShell(dotnet remove TaskApp.API/TaskApp.API.csproj package Microsoft.OpenApi; dotnet add TaskApp.API/TaskApp.API.csproj package Microsoft.OpenApi --version 2.4.1)",
+      "PowerShell(dotnet remove *)",
+      "WebFetch(domain:stackoverflow.com)"
     ]
   }
 }
