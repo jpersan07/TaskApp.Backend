@@ -45,7 +45,8 @@ public class TagService : ITagService
     {
       Tag _newTag = new Tag
       {
-        Name = newTag.Name
+        Name = newTag.Name,
+        UserId= userId
       };
 
       await _repository.Add(_newTag);

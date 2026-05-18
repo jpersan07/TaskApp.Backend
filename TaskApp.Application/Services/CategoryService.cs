@@ -44,7 +44,8 @@ public class CategoryService : ICategoryService
     {
       Category _newCat = new Category
       {
-        Name = newCat.Name
+        Name = newCat.Name,
+        UserId = userId
       };
 
       await _repository.Add(_newCat);

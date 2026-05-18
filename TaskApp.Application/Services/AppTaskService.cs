@@ -103,6 +103,7 @@ public class AppTaskService : IAppTaskService
       var tasks = await _repository.GetAllByUserId(userId);
       return tasks.Select(task => new AppTaskDto
       {
+        Id = task.Id,
         UserName = task.User.UserName!,
         Title = task.Title,
         Description = task.Description,
@@ -129,11 +130,12 @@ public class AppTaskService : IAppTaskService
   {
     try
     {
-      var task = await _repository.GetById(id);
+      var task = await _repository.GetTaskById(id);
 
       if (task != null)
         return new AppTaskDto
         {
+          Id = id,
           UserName = task.User.UserName!,
           Title = task.Title,
           Description = task.Description,
