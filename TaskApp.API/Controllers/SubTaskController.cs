@@ -13,6 +13,11 @@ namespace TaskApp.API.Controllers
     private readonly ISubTaskService _subTaskService;
     public SubTaskController(ISubTaskService subTaskService) => _subTaskService = subTaskService;
 
+    /// <summary>
+    /// A method to get all the SubTasks belonging to a Task
+    /// </summary>
+    /// <param name="taskId">The ID of the parent task</param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> GetAll(int taskId)
     {
@@ -20,6 +25,11 @@ namespace TaskApp.API.Controllers
       return Ok(result);
     }
 
+    /// <summary>
+    /// A method to get the SubTask info by its ID
+    /// </summary>
+    /// <param name="id">The ID of the subtask you want to get the info from</param>
+    /// <returns></returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetSubTaskById(int id)
     {
@@ -30,6 +40,11 @@ namespace TaskApp.API.Controllers
         return NotFound();
     }
 
+    /// <summary>
+    /// A method to create a subtask linked to a parent task
+    /// </summary>
+    /// <param name="newSubTask">The SubTask obj that is going to be created</param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> CreateSubTask(CreateSubTaskDto newSubTask)
     {
@@ -37,6 +52,12 @@ namespace TaskApp.API.Controllers
       return CreatedAtAction(nameof(GetSubTaskById), new { id = result.Id}, result);
     }
 
+    /// <summary>
+    /// A method to update a subtask by a new SubTask obj and its id
+    /// </summary>
+    /// <param name="uptSubTask">The new SubTask properties in a new obj</param>
+    /// <param name="id">The id of the subtask wanting to update</param>
+    /// <returns></returns>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateSubTask(UpdateSubTaskDto uptSubTask, int id)
     {
@@ -44,6 +65,11 @@ namespace TaskApp.API.Controllers
       return NoContent();
     }
 
+    /// <summary>
+    /// A method to delete a subtask by its id
+    /// </summary>
+    /// <param name="id">The id of the subtask</param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteById(int id)
     {
@@ -51,6 +77,11 @@ namespace TaskApp.API.Controllers
       return NoContent();
     }
 
+    /// <summary>
+    /// A method to delete all subtasks belonging to a parent task
+    /// </summary>
+    /// <param name="taskId">The id of the parent task</param>
+    /// <returns></returns>
     [HttpDelete("bulk/{taskId}")]
     public async Task<IActionResult> BulkDelteUserId(int taskId)
     {

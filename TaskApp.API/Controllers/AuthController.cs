@@ -11,6 +11,11 @@ namespace TaskApp.API.Controllers
     private readonly IAuthService _service;
     public AuthController(IAuthService service) => _service = service;
 
+    /// <summary>
+    /// A method to register a new user
+    /// </summary>
+    /// <param name="register">The user credentials needed to create the account</param>
+    /// <returns></returns>
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto register)
     {
@@ -20,6 +25,11 @@ namespace TaskApp.API.Controllers
         return BadRequest();
     }
 
+    /// <summary>
+    /// A method to log in and get a JWT token
+    /// </summary>
+    /// <param name="login">The user credentials needed to authenticate</param>
+    /// <returns></returns>
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto login)
     {

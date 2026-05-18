@@ -1,5 +1,8 @@
 namespace TaskApp.Application.DTOs;
 
+/// <summary>
+/// DTO with the required fields to create a new task
+/// </summary>
 public class CreateAppTaskDto
 {
   public string Title { get; set; } = string.Empty;
