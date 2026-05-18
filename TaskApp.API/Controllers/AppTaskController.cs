@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskApp.Application.DTOs;
@@ -16,7 +18,7 @@ public class AppTaskController : ControllerBase
   [HttpGet]
   public async Task<IActionResult> GetAll()
   {
-    var result = await _taskService.GetAllTask("hola123");
+    var result = await _taskService.GetAllTask(User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
     return Ok(result);
   }
 
@@ -34,7 +36,7 @@ public class AppTaskController : ControllerBase
   [HttpPost]
   public async Task<IActionResult> CreateTask(CreateAppTaskDto newTask)
   {
-    var result = await _taskService.CreateTask(newTask, "hola123");
+    var result = await _taskService.CreateTask(newTask, User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
     return CreatedAtAction(nameof(GetById), new { id = result.Id}, result);
   }
 
