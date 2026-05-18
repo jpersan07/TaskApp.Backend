@@ -1,7 +1,7 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 using TaskApp.Application.DTOs;
 using TaskApp.Application.Services;
 
@@ -16,9 +16,9 @@ namespace TaskApp.API.Controllers
     public CategoryController(ICategoryService categoryService) => _categoryService = categoryService;
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(string userId)
+    public async Task<IActionResult> GetAll()
     {
-      var result = await _categoryService.GetAllCat(userId);
+      var result = await _categoryService.GetAllCat(User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
       return Ok(result);
     }
 
@@ -35,7 +35,7 @@ namespace TaskApp.API.Controllers
     [HttpPost]
     public async Task<IActionResult> CreateCategory(CreateCategoryDto newCat)
     {
-      var result = await _categoryService.CreateCategory(newCat, "hola123");
+      var result = await _categoryService.CreateCategory(newCat, User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
       return CreatedAtAction(nameof(GetCategoryById), new { id = result.Id}, result);
     }
 
@@ -53,10 +53,10 @@ namespace TaskApp.API.Controllers
       return NoContent();
     }
 
-    [HttpDelete("bulk/{userId}")]
-    public async Task<IActionResult> BulkDelteUserId(string userId)
+    [HttpDelete("bulk")]
+    public async Task<IActionResult> BulkDelteUserId()
     {
-      await _categoryService.BulkDelete(userId);
+      await _categoryService.BulkDelete(User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
       return NoContent();
     }
   }
