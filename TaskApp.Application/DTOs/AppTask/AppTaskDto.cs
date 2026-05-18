@@ -2,6 +2,9 @@ using TaskStatus = TaskApp.Domain.Enums.TaskStatus;
 
 namespace TaskApp.Application.DTOs;
 
+/// <summary>
+/// DTO representing a task returned to the client, including related data such as subtasks and tags
+/// </summary>
 public class AppTaskDto
 {
   public int Id { get; set; }

@@ -14,6 +14,12 @@ public class AppTaskService : IAppTaskService
     _repository = repository;
   }
 
+  /// <summary>
+  /// A method to Bulk delete tasks from an user
+  /// </summary>
+  /// <param name="userId">The user that is going to get all the task deleted</param>
+  /// <returns>Returns an expcetion if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task BulkDelete(string userId)
   {
     try
@@ -28,6 +34,13 @@ public class AppTaskService : IAppTaskService
     }
   }
 
+  /// <summary>
+  /// A method to create a new task from a Task obj
+  /// </summary>
+  /// <param name="newTask">The task obj that is going to replace the old task</param>
+  /// <param name="userId">The owner of the task</param>
+  /// <returns>Returns an expcetion if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task<AppTaskDto> CreateTask(CreateAppTaskDto newTask, string userId)
   {
     try
@@ -59,6 +72,12 @@ public class AppTaskService : IAppTaskService
     }
   }
 
+  /// <summary>
+  /// A method to delete a task by its id
+  /// </summary>
+  /// <param name="id">The id of the task that is going to be deleted</param>
+  /// <returns>Returns an expcetion if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task DeleteTask(int id)
   {
     try
@@ -71,6 +90,12 @@ public class AppTaskService : IAppTaskService
     }
   }
 
+  /// <summary>
+  /// A method to get all user's task by its userId
+  /// </summary>
+  /// <param name="userId">The owner of all the task that are going to be getted</param>
+  /// <returns>Returns an expcetion if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task<IEnumerable<AppTaskDto>> GetAllTask(string userId)
   {
     try
@@ -94,6 +119,12 @@ public class AppTaskService : IAppTaskService
     }
   }
 
+  /// <summary>
+  /// A method to get a task by its id
+  /// </summary>
+  /// <param name="id">The id of the task you want to retrieve</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task<AppTaskDto?> GetTaskById(int id)
   {
     try
@@ -122,6 +153,14 @@ public class AppTaskService : IAppTaskService
     }
   }
 
+
+  /// <summary>
+  /// A method to update a task by a new Task obj and its id
+  /// </summary>
+  /// <param name="uptTask">The new Task properties in a new obj</param>
+  /// <param name="id">The id of the task wanting to update</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task UpdateTask(UpdateAppTaskDto uptTask, int id)
   {
     try

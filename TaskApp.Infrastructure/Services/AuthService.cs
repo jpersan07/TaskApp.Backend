@@ -11,6 +11,9 @@ using TaskApp.Domain.Entities;
 namespace TaskApp.Infrastructure.Services;
 
 
+/// <summary>
+/// Service that handles user authentication: registration and JWT token generation on login
+/// </summary>
 public class AuthService : IAuthService
 {
   private readonly UserManager<AppUser> _userManager;
@@ -24,6 +27,12 @@ public class AuthService : IAuthService
     _configuration = configuration;
   }
 
+  /// <summary>
+  /// A method to authenticate a user and return a signed JWT token
+  /// </summary>
+  /// <param name="login">The credentials needed to authenticate the user</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task<AuthResponseDto> Login(LoginDto login)
   {
     try
@@ -61,6 +70,12 @@ public class AuthService : IAuthService
     }
   }
 
+  /// <summary>
+  /// A method to register a new user in the system
+  /// </summary>
+  /// <param name="register">The data needed to create the new user account</param>
+  /// <returns>Returns an exception if the method cant be resolved</returns>
+  /// <exception cref="Exception"></exception>
   public async Task<bool> Register(RegisterDto register)
   {
     try
