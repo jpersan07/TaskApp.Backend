@@ -5,7 +5,12 @@
       "Bash(git merge *)",
       "Bash(rm *)",
       "Bash(New-Item *)",
-      "PowerShell(New-Item *)"
+      "PowerShell(New-Item *)",
+      "Bash(gh pr *)",
+      "PowerShell(gh pr *)",
+      "Bash(git checkout *)",
+      "Bash(git pull *)",
+      "Bash(git branch *)"
     ]
   }
 }

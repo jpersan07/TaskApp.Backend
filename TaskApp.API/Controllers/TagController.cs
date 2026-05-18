@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskApp.Application.DTOs;
@@ -14,9 +16,9 @@ namespace TaskApp.API.Controllers
     public TagController(ITagService tagService) => _tagService = tagService;
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(string userId)
+    public async Task<IActionResult> GetAll()
     {
-      var result = await _tagService.GetAllTags(userId);
+      var result = await _tagService.GetAllTags(User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
       return Ok(result);
     }
 
@@ -33,7 +35,7 @@ namespace TaskApp.API.Controllers
     [HttpPost]
     public async Task<IActionResult> CreateTag(CreateTagDto newTag)
     {
-      var result = await _tagService.CreateTag(newTag, "hola123");
+      var result = await _tagService.CreateTag(newTag, User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
       return CreatedAtAction(nameof(GetTagById), new { id = result.Id}, result);
     }
 
@@ -51,10 +53,10 @@ namespace TaskApp.API.Controllers
       return NoContent();
     }
 
-    [HttpDelete("bulk/{userId}")]
-    public async Task<IActionResult> BulkDelteUserId(string userId)
+    [HttpDelete("bulk")]
+    public async Task<IActionResult> BulkDelteUserId()
     {
-      await _tagService.BulkDelete(userId);
+      await _tagService.BulkDelete(User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
       return NoContent();
     }
   }
