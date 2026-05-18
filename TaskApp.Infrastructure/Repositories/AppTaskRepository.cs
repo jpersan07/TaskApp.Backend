@@ -35,7 +35,7 @@ public class AppTaskRepository : Repository<AppTask>, IAppTaskRepository
       throw new Exception($"Error getting all Tasks from user '{userId}' from database", ex);
     }
   }
-  
+
   public async Task<AppTask?> GetTaskById(int id)
   {
     try
