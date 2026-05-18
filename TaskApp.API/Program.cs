@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using TaskApp.API.Middleware;
 using TaskApp.Application.Services;
 using TaskApp.Domain.Entities;
 using TaskApp.Domain.Interfaces;
@@ -79,6 +80,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
