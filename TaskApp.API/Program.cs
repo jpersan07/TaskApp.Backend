@@ -82,6 +82,7 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
+app.UseMiddleware<TaskOwnershipMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 app.UseSwagger();
