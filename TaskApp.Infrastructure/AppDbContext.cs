@@ -11,7 +11,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
 {
   /// <summary>The tasks table</summary>
   public DbSet<AppTask> AppTasks { get; set; }
-  /// <summary>The categories table</summary>
+  /// <summary>The categories table </summary>
   public DbSet<Category> Categories { get; set; }
   /// <summary>The tags table</summary>
   public DbSet<Tag> Tags { get; set; }
