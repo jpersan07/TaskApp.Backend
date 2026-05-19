@@ -28,6 +28,11 @@ packages/
 .DS_Store
 Thumbs.db
 
+# Cache
+.csproj.lscache
+.cache
+.lscache
+
 # Personal docs
 *.pdf
 CLAUDE.md
