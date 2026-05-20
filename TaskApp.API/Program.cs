@@ -1,4 +1,6 @@
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TaskApp.API.Middleware;
 using TaskApp.Application.Services;
+using TaskApp.Application.Validators;
 using TaskApp.Domain.Entities;
 using TaskApp.Domain.Interfaces;
 using TaskApp.Infrastructure;
@@ -18,6 +21,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAppTaskDtoValidator>();
 builder.Services.AddScoped<IAppTaskService, AppTaskService>();
 builder.Services.AddScoped<IAppTaskRepository, AppTaskRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
