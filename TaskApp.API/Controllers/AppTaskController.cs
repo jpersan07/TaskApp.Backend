@@ -48,6 +48,7 @@ public class AppTaskController : ControllerBase
   [HttpPost]
   public async Task<IActionResult> CreateTask(CreateAppTaskDto newTask)
   {
+    //if(newTask.DueDate > DateTime.Now)
     var result = await _taskService.CreateTask(newTask, User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
     return CreatedAtAction(nameof(GetById), new { id = result.Id}, result);
   }

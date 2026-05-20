@@ -28,7 +28,7 @@ public class TaskOwnershipMiddleware
     }
 
     int taskId = int.Parse(taskString);
-    string userId = context.User.FindFirstValue("pruebaAdri")!;
+    string userId = context.User.FindFirstValue(JwtRegisteredClaimNames.Sub)!;
 
     var task = await repo.GetTaskById(taskId);
 
