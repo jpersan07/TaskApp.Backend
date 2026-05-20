@@ -1,3 +1,4 @@
+using TaskApp.Domain.Entities;
 using TaskStatus = TaskApp.Domain.Enums.TaskStatus;
 
 
@@ -12,7 +13,7 @@ public class UpdateAppTaskDto
   public string? Description { get; set; } 
   public DateTime? DueDate { get; set; } 
   public TaskStatus? Status { get; set; } 
-  public string? Category { get; set; } 
+  public int? CategoryId { get; set; }
   public ICollection<string>? SubTasks { get; set; } 
   public ICollection<string>? Tags { get; set; } 
 }
