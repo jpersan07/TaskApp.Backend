@@ -42,6 +42,10 @@ public class CategoryService : ICategoryService
   {
     try
     {
+      var existingCat = await _repository.GetByNameUserId(newCat.Name, userId);
+      if (existingCat != null)
+        return null!;
+
       Category _newCat = new Category
       {
         Name = newCat.Name,
