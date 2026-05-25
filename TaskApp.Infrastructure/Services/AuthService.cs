@@ -76,16 +76,16 @@ public class AuthService : IAuthService
   /// <param name="register">The data needed to create the new user account</param>
   /// <returns>Returns an exception if the method cant be resolved</returns>
   /// <exception cref="Exception"></exception>
-  public async Task<bool> Register(RegisterDto register)
+  public async Task<IEnumerable<string>> Register(RegisterDto register)
   {
     try
     {
       AppUser user = new AppUser { Email = register.Email, UserName = register.UserName };
       IdentityResult userCreate = await _userManager.CreateAsync(user, register.Password);
       if (userCreate.Succeeded)
-        return true;
+        return [];
       else
-        return false;
+        return userCreate.Errors.Select(e => e.Description);
     }
     catch (Exception ex)
     {
