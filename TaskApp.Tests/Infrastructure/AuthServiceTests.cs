@@ -45,11 +45,11 @@ public class AuthServiceTests
 
         var result = await _service.Register(dto);
 
-        Assert.True(result);
+        Assert.Empty(result);
     }
 
     [Fact]
-    public async Task Register_WhenFails_ReturnsFalse()
+    public async Task Register_WhenFails_ReturnsErrors()
     {
         var dto = new RegisterDto { Email = "bad@test.com", UserName = "bad", Password = "weak" };
         _mockUserManager
@@ -58,7 +58,7 @@ public class AuthServiceTests
 
         var result = await _service.Register(dto);
 
-        Assert.False(result);
+        Assert.Contains("Password too weak", result);
     }
 
     [Fact]
