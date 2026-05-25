@@ -35,39 +35,32 @@ public class AuthService : IAuthService
   /// <exception cref="Exception"></exception>
   public async Task<AuthResponseDto> Login(LoginDto login)
   {
-    try
+    var user = await _userManager.FindByNameAsync(login.UserName);
+    if (user == null)
+      return null!;
+
+    SignInResult userLoged = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
+    if (!userLoged.Succeeded)
+      return null!;
+
+    var claims = new[]
     {
-      var user = await _userManager.FindByNameAsync(login.UserName);
-      if (user == null)
-        return null!;
+      new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+      new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName!)
+    };
 
-      SignInResult userLoged = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
-      if (!userLoged.Succeeded)
-        return null!;
+    SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+    SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-      var claims = new[]
-      {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName!)
-      };
+    var token = new JwtSecurityToken(
+      issuer: _configuration["Jwt:Issuer"],
+      audience: _configuration["Jwt:Audience"],
+      claims: claims,
+      expires: DateTime.UtcNow.AddHours(8),
+      signingCredentials: creds
+    );
 
-      SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-      SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-      var token = new JwtSecurityToken(
-        issuer: _configuration["Jwt:Issuer"],
-        audience: _configuration["Jwt:Audience"],
-        claims: claims,
-        expires: DateTime.UtcNow.AddHours(8),
-        signingCredentials: creds
-      );
-
-      return new AuthResponseDto { Token = new JwtSecurityTokenHandler().WriteToken(token) };
-    }
-    catch (Exception ex)
-    {
-      throw new Exception($"Error logging in user '{login.UserName}'", ex);
-    }
+    return new AuthResponseDto { Token = new JwtSecurityTokenHandler().WriteToken(token) };
   }
 
   /// <summary>
@@ -78,19 +71,12 @@ public class AuthService : IAuthService
   /// <exception cref="Exception"></exception>
   public async Task<IEnumerable<string>> Register(RegisterDto register)
   {
-    try
-    {
-      AppUser user = new AppUser { Email = register.Email, UserName = register.UserName };
-      IdentityResult userCreate = await _userManager.CreateAsync(user, register.Password);
-      if (userCreate.Succeeded)
-        return [];
-      else
-        return userCreate.Errors.Select(e => e.Description);
-    }
-    catch (Exception ex)
-    {
-      throw new Exception($"Error registering the new user '{register.UserName}'", ex);
-    }
+    AppUser user = new AppUser { Email = register.Email, UserName = register.UserName };
+    IdentityResult userCreate = await _userManager.CreateAsync(user, register.Password);
+    if (userCreate.Succeeded)
+      return [];
+    else
+      return userCreate.Errors.Select(e => e.Description);
   }
 }
 

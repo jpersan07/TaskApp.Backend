@@ -1,4 +1,3 @@
-using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using TaskApp.Domain.Interfaces;
 
@@ -21,15 +20,8 @@ public class Repository<T> : IRepository<T> where T : class
   /// <returns></returns>
   public async Task Add(T entity)
   {
-    try
-    {
-      await _context.Set<T>().AddAsync(entity);
-      await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateException ex)
-    {
-      throw new Exception($"Error adding entity '{entity}' to database", ex);
-    }
+    await _context.Set<T>().AddAsync(entity);
+    await _context.SaveChangesAsync();
   }
   /// <summary>
   /// A method to remove from the DB a TaskApp(Tasks), Users, SubTask, Categories or Tag
@@ -42,15 +34,8 @@ public class Repository<T> : IRepository<T> where T : class
 
     if (entity != null)
     {
-      try
-      {
-        _context.Set<T>().Remove(entity!);
-        await _context.SaveChangesAsync();
-      }
-      catch (DbUpdateException ex)
-      {
-        throw new Exception($"Error deleting entity '{id}' to database", ex);
-      }
+      _context.Set<T>().Remove(entity!);
+      await _context.SaveChangesAsync();
     }
   }
   /// <summary>
@@ -59,14 +44,7 @@ public class Repository<T> : IRepository<T> where T : class
   /// <returns></returns>
   public async Task<IEnumerable<T>> GetAll()
   {
-    try
-    {
-      return await _context.Set<T>().ToListAsync();
-    }
-    catch (DbException ex)
-    {
-      throw new Exception("Error getting entities from database", ex);
-    }
+    return await _context.Set<T>().ToListAsync();
   }
   /// <summary>
   /// A method to get a TaskApp(Tasks), Users, SubTask, Categories or Tag by its ID
@@ -75,14 +53,7 @@ public class Repository<T> : IRepository<T> where T : class
   /// <returns></returns>
   public async Task<T?> GetById(int id)
   {
-    try
-    {
-      return await _context.Set<T>().FindAsync(id);
-    }
-    catch (DbException ex)
-    {
-      throw new Exception($"Error getting entity '{id}' from database", ex);
-    }
+    return await _context.Set<T>().FindAsync(id);
   }
   /// <summary>
   /// A method to update a Task
@@ -91,15 +62,8 @@ public class Repository<T> : IRepository<T> where T : class
   /// <returns></returns>
   public async Task Update(T entity)
   {
-    try
-    {
-      _context.Set<T>().Update(entity);
-      await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateException ex)
-    {
-      throw new Exception($"Error updating entity '{entity}' to database", ex);
-    }
+    _context.Set<T>().Update(entity);
+    await _context.SaveChangesAsync();
   }
 
   /// <summary>

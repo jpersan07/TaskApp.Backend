@@ -181,38 +181,34 @@ public class CategoryServiceTests
     }
 
     [Fact]
-    public async Task BulkDelete_WhenRepositoryThrows_WrapsException()
+    public async Task BulkDelete_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.GetAllByUserId("user1")).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.BulkDelete("user1"));
-        Assert.Contains("Error deleting all categories", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.BulkDelete("user1"));
     }
 
     [Fact]
-    public async Task CreateCategory_WhenRepositoryThrows_WrapsException()
+    public async Task CreateCategory_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.Add(It.IsAny<Category>())).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.CreateCategory(new CreateCategoryDto { Name = "Work" }, "user1"));
-        Assert.Contains("Error creating", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.CreateCategory(new CreateCategoryDto { Name = "Work" }, "user1"));
     }
 
     [Fact]
-    public async Task DeleteCat_WhenRepositoryThrows_WrapsException()
+    public async Task DeleteCat_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.Delete(1)).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.DeleteCat(1));
-        Assert.Contains("Error deleting the category", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.DeleteCat(1));
     }
 
     [Fact]
-    public async Task UpdateCat_WhenRepositoryThrows_WrapsException()
+    public async Task UpdateCat_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.GetById(1)).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.UpdateCat(new UpdateCategoryDto { Name = "X" }, 1));
-        Assert.Contains("Error updating the category", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.UpdateCat(new UpdateCategoryDto { Name = "X" }, 1));
     }
 }

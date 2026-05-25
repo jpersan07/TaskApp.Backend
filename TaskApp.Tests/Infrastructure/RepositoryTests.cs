@@ -139,8 +139,7 @@ public class RepositoryTests
         using var ctx = CreateFailingContext();
         var repo = new Repository<AppTask>(ctx);
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => repo.Add(BuildTask()));
-        Assert.Contains("Error adding entity", ex.Message);
+        await Assert.ThrowsAsync<DbUpdateException>(() => repo.Add(BuildTask()));
     }
 
     [Fact]
@@ -159,8 +158,7 @@ public class RepositoryTests
 
         await using var failCtx = new FailingDbContext(normalOpts);
         var repo = new Repository<AppTask>(failCtx);
-        var ex = await Assert.ThrowsAsync<Exception>(() => repo.Update(task));
-        Assert.Contains("Error updating entity", ex.Message);
+        await Assert.ThrowsAsync<DbUpdateException>(() => repo.Update(task));
     }
 
     [Fact]
@@ -179,7 +177,6 @@ public class RepositoryTests
 
         await using var failCtx = new FailingDbContext(normalOpts);
         var repo = new Repository<AppTask>(failCtx);
-        var ex = await Assert.ThrowsAsync<Exception>(() => repo.Delete(task.Id));
-        Assert.Contains("Error deleting entity", ex.Message);
+        await Assert.ThrowsAsync<DbUpdateException>(() => repo.Delete(task.Id));
     }
 }

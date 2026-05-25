@@ -1,5 +1,4 @@
 using System;
-using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using TaskApp.Domain.Entities;
 using TaskApp.Domain.Interfaces;
@@ -20,13 +19,6 @@ public class TagRepository : Repository<Tag>, ITagRepository
   /// <exception cref="Exception"></exception>
   public async Task<IEnumerable<Tag>> GetAllByUserId(string userId)
   {
-    try
-    {
-      return await _context.Set<Tag>().Where(x => x.UserId == userId).ToListAsync();
-    }
-    catch (DbException ex)
-    {
-      throw new Exception($"Error getting all Tags from user '{userId}' from database", ex);
-    }
+    return await _context.Set<Tag>().Where(x => x.UserId == userId).ToListAsync();
   }
 }
