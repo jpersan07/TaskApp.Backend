@@ -1,4 +1,4 @@
-using System.Data.Common;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using TaskApp.Domain.Entities;
@@ -21,35 +21,21 @@ public class AppTaskRepository : Repository<AppTask>, IAppTaskRepository
   /// <exception cref="Exception"></exception>
   public async Task<IEnumerable<AppTask>> GetAllByUserId(string userId)
   {
-    try
-    {
-      return await _context.Set<AppTask>()
-      .Include(x => x.User)
-      .Include(x => x.SubTasks)
-      .Include(x => x.Tags)
-      .Include(x => x.Category)
-      .Where(x => x.UserId == userId).ToListAsync();
-    }
-    catch (DbException ex)
-    {
-      throw new Exception($"Error getting all Tasks from user '{userId}' from database", ex);
-    }
+    return await _context.Set<AppTask>()
+    .Include(x => x.User)
+    .Include(x => x.SubTasks)
+    .Include(x => x.Tags)
+    .Include(x => x.Category)
+    .Where(x => x.UserId == userId).ToListAsync();
   }
 
   public async Task<AppTask?> GetTaskById(int id)
   {
-    try
-    {
-      return await _context.Set<AppTask>()
-      .Include(x => x.User)
-      .Include(x => x.SubTasks)
-      .Include(x => x.Tags)
-      .Include(x => x.Category)
-      .Where(x => x.Id == id).FirstOrDefaultAsync();
-    }
-    catch (DbException ex)
-    {
-      throw new Exception($"Error getting task '{id}' from database", ex);
-    }
+    return await _context.Set<AppTask>()
+    .Include(x => x.User)
+    .Include(x => x.SubTasks)
+    .Include(x => x.Tags)
+    .Include(x => x.Category)
+    .Where(x => x.Id == id).FirstOrDefaultAsync();
   }
 }

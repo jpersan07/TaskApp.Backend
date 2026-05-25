@@ -1,6 +1,4 @@
 using System;
-using System.Data.Common;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using TaskApp.Domain.Entities;
 using TaskApp.Domain.Interfaces;
@@ -21,25 +19,11 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
   /// <exception cref="Exception"></exception>
   public async Task<IEnumerable<Category>> GetAllByUserId(string userId)
   {
-    try
-    {
-      return await _context.Set<Category>().Where(x => x.UserId == userId).ToListAsync();
-    }
-    catch (DbException ex)
-    {
-      throw new Exception($"Error getting all categories from  user'{userId}' from database", ex);
-    }
+    return await _context.Set<Category>().Where(x => x.UserId == userId).ToListAsync();
   }
 
   public async Task<Category?> GetByNameUserId(string name, string userId)
   {
-    try
-    {
-      return await _context.Set<Category>().Where(x => x.UserId == userId && x.Name == name).FirstOrDefaultAsync();
-    }
-    catch (DbException ex)
-    {
-      throw new Exception($"Error getting category '{name}' from user '{userId}' from database", ex);
-    }
+    return await _context.Set<Category>().Where(x => x.UserId == userId && x.Name == name).FirstOrDefaultAsync();
   }
 }
