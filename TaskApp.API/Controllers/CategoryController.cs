@@ -50,7 +50,9 @@ namespace TaskApp.API.Controllers
     public async Task<IActionResult> CreateCategory(CreateCategoryDto newCat)
     {
       var result = await _categoryService.CreateCategory(newCat, User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
-      return CreatedAtAction(nameof(GetCategoryById), new { id = result.Id}, result);
+      if (result == null)
+        return BadRequest("A category with this name already exists");
+      return CreatedAtAction(nameof(GetCategoryById), new { id = result.Id }, result);
     }
 
     /// <summary>
