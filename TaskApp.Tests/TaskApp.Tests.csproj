@@ -16,6 +16,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.7" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="xunit" Version="2.9.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
@@ -29,6 +31,7 @@
     <ProjectReference Include="../TaskApp.Application/TaskApp.Application.csproj" />
     <ProjectReference Include="../TaskApp.API/TaskApp.API.csproj" />
     <ProjectReference Include="../TaskApp.Domain/TaskApp.Domain.csproj" />
+    <ProjectReference Include="../TaskApp.Infrastructure/TaskApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

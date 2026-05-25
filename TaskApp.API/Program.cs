@@ -94,3 +94,6 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.Run();
+
+[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+public partial class Program { }
