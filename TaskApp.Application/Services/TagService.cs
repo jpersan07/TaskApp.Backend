@@ -20,16 +20,9 @@ public class TagService : ITagService
   /// <exception cref="Exception"></exception>
   public async Task BulkDelete(string userId)
   {
-    try
-    {
-      var allTags = await _repository.GetAllByUserId(userId);
-      foreach (var item in allTags)
-        await _repository.Delete(item.Id);
-    }
-    catch (Exception ex)
-    {
-      throw new Exception($"Error deleting all tags for user '{userId}'", ex);
-    }
+    var allTags = await _repository.GetAllByUserId(userId);
+    foreach (var item in allTags)
+      await _repository.Delete(item.Id);
   }
 
   /// <summary>
@@ -41,27 +34,20 @@ public class TagService : ITagService
   /// <exception cref="Exception"></exception>
   public async Task<TagDto> CreateTag(CreateTagDto newTag, string userId)
   {
-    try
+    Tag _newTag = new Tag
     {
-      Tag _newTag = new Tag
-      {
-        Name = newTag.Name,
-        UserId= userId
-      };
+      Name = newTag.Name,
+      UserId= userId
+    };
 
-      await _repository.Add(_newTag);
+    await _repository.Add(_newTag);
 
-      return new TagDto
-      {
-        Id = _newTag.Id,
-        Name = _newTag.Name,
-        UserId = userId
-      };
-    }
-    catch (Exception ex)
+    return new TagDto
     {
-      throw new Exception($"Error creating the new tag '{newTag.Name}'", ex);
-    }
+      Id = _newTag.Id,
+      Name = _newTag.Name,
+      UserId = userId
+    };
   }
 
   /// <summary>
@@ -72,14 +58,7 @@ public class TagService : ITagService
   /// <exception cref="Exception"></exception>
   public async Task DeleteTag(int id)
   {
-    try
-    {
-      await _repository.Delete(id);
-    }
-    catch (Exception ex)
-    {
-      throw new Exception($"Error deleting the tag with id '{id}'", ex);
-    }
+    await _repository.Delete(id);
   }
 
   /// <summary>
@@ -90,20 +69,13 @@ public class TagService : ITagService
   /// <exception cref="Exception"></exception>
   public async Task<IEnumerable<TagDto>> GetAllTags(string userId)
   {
-    try
+    var tags = await _repository.GetAllByUserId(userId);
+    return tags.Select(tag => new TagDto
     {
-      var tags = await _repository.GetAllByUserId(userId);
-      return tags.Select(tag => new TagDto
-      {
-        Id = tag.Id,
-        Name = tag.Name,
-        UserId = userId
-      });
-    }
-    catch (Exception ex)
-    {
-      throw new Exception($"Error retrieving all tags for user '{userId}'", ex);
-    }
+      Id = tag.Id,
+      Name = tag.Name,
+      UserId = userId
+    });
   }
 
   /// <summary>
@@ -114,24 +86,17 @@ public class TagService : ITagService
   /// <exception cref="Exception"></exception>
   public async Task<TagDto?> GetTagById(int id)
   {
-    try
-    {
-      var tag = await _repository.GetById(id);
+    var tag = await _repository.GetById(id);
 
-      if (tag != null)
-        return new TagDto
-        {
-          Id = tag.Id,
-          Name = tag.Name,
-          UserId = tag.UserId
-        };
-      else
-        return null;
-    }
-    catch (Exception ex)
+    if (tag != null)
+      return new TagDto
     {
-      throw new Exception($"Error retrieving the tag with id '{id}'", ex);
-    }
+      Id = tag.Id,
+      Name = tag.Name,
+      UserId = tag.UserId
+    };
+    else
+      return null;
   }
 
   /// <summary>
@@ -143,20 +108,13 @@ public class TagService : ITagService
   /// <exception cref="Exception"></exception>
   public async Task UpdateTag(UpdateTagDto uptTag, int id)
   {
-    try
-    {
-      var tag = await _repository.GetById(id);
+    var tag = await _repository.GetById(id);
 
-      if (tag != null)
-      {
-        if (uptTag.Name != null)
-          tag.Name = uptTag.Name;
-        await _repository.Update(tag);
-      }
-    }
-    catch (Exception ex)
+    if (tag != null)
     {
-      throw new Exception($"Error updating the tag with id '{id}'", ex);
+      if (uptTag.Name != null)
+        tag.Name = uptTag.Name;
+      await _repository.Update(tag);
     }
   }
 }

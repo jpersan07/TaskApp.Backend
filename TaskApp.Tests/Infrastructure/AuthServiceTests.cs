@@ -69,8 +69,7 @@ public class AuthServiceTests
             .Setup(m => m.CreateAsync(It.IsAny<AppUser>(), dto.Password))
             .ThrowsAsync(new Exception("DB down"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.Register(dto));
-        Assert.Contains("Error registering", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.Register(dto));
     }
 
     [Fact]
@@ -121,7 +120,6 @@ public class AuthServiceTests
         var dto = new LoginDto { UserName = "crash", Password = "pass" };
         _mockUserManager.Setup(m => m.FindByNameAsync("crash")).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.Login(dto));
-        Assert.Contains("Error logging in", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.Login(dto));
     }
 }

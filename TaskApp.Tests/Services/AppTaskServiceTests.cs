@@ -190,39 +190,35 @@ public class AppTaskServiceTests
     }
 
     [Fact]
-    public async Task BulkDelete_WhenRepositoryThrows_WrapsException()
+    public async Task BulkDelete_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.GetAllByUserId("user1")).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.BulkDelete("user1"));
-        Assert.Contains("Error deleting all tasks", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.BulkDelete("user1"));
     }
 
     [Fact]
-    public async Task CreateTask_WhenRepositoryThrows_WrapsException()
+    public async Task CreateTask_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.Add(It.IsAny<AppTask>())).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.CreateTask(new CreateAppTaskDto { Title = "T" }, "user1"));
-        Assert.Contains("Error creating", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.CreateTask(new CreateAppTaskDto { Title = "T" }, "user1"));
     }
 
     [Fact]
-    public async Task DeleteTask_WhenRepositoryThrows_WrapsException()
+    public async Task DeleteTask_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.Delete(1)).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.DeleteTask(1));
-        Assert.Contains("Error deleting the task", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.DeleteTask(1));
     }
 
     [Fact]
-    public async Task UpdateTask_WhenRepositoryThrows_WrapsException()
+    public async Task UpdateTask_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.GetById(1)).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.UpdateTask(new UpdateAppTaskDto { Title = "T" }, 1));
-        Assert.Contains("Error updating the task", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.UpdateTask(new UpdateAppTaskDto { Title = "T" }, 1));
     }
 
     [Fact]

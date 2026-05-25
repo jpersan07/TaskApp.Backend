@@ -180,38 +180,34 @@ public class TagServiceTests
     }
 
     [Fact]
-    public async Task BulkDelete_WhenRepositoryThrows_WrapsException()
+    public async Task BulkDelete_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.GetAllByUserId("user1")).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.BulkDelete("user1"));
-        Assert.Contains("Error deleting all tags", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.BulkDelete("user1"));
     }
 
     [Fact]
-    public async Task CreateTag_WhenRepositoryThrows_WrapsException()
+    public async Task CreateTag_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.Add(It.IsAny<Tag>())).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.CreateTag(new CreateTagDto { Name = "Urgent" }, "user1"));
-        Assert.Contains("Error creating", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.CreateTag(new CreateTagDto { Name = "Urgent" }, "user1"));
     }
 
     [Fact]
-    public async Task DeleteTag_WhenRepositoryThrows_WrapsException()
+    public async Task DeleteTag_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.Delete(1)).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.DeleteTag(1));
-        Assert.Contains("Error deleting the tag", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.DeleteTag(1));
     }
 
     [Fact]
-    public async Task UpdateTag_WhenRepositoryThrows_WrapsException()
+    public async Task UpdateTag_WhenRepositoryThrows_ThrowsException()
     {
         _mockRepo.Setup(r => r.GetById(1)).ThrowsAsync(new Exception("DB error"));
 
-        var ex = await Assert.ThrowsAsync<Exception>(() => _service.UpdateTag(new UpdateTagDto { Name = "X" }, 1));
-        Assert.Contains("Error updating the tag", ex.Message);
+        await Assert.ThrowsAsync<Exception>(() => _service.UpdateTag(new UpdateTagDto { Name = "X" }, 1));
     }
 }

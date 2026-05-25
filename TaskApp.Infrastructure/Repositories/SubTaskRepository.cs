@@ -1,5 +1,4 @@
 using System;
-using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using TaskApp.Domain.Entities;
 using TaskApp.Domain.Interfaces;
@@ -21,13 +20,6 @@ public class SubTaskRepository : Repository<SubTask>, ISubTaskRepository
   /// <exception cref="Exception"></exception>
   public async Task<IEnumerable<SubTask>> GetAllByTaskId(int taskId)
   {
-    try
-    {
-      return await _context.Set<SubTask>().Where(x => x.TaskId == taskId).ToListAsync();
-    }
-    catch (DbException ex)
-    {
-      throw new Exception($"Error getting all subtasks from Task '{taskId}' from database", ex);
-    }
+    return await _context.Set<SubTask>().Where(x => x.TaskId == taskId).ToListAsync();
   }
 }
