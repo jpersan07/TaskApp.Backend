@@ -21,7 +21,7 @@ public class AuthControllerTests
     public async Task Register_WhenSucceeds_ReturnsOk()
     {
         var dto = new RegisterDto { Email = "test@test.com", UserName = "testuser", Password = "Pass1!" };
-        _mockService.Setup(s => s.Register(dto)).ReturnsAsync(true);
+        _mockService.Setup(s => s.Register(dto)).ReturnsAsync(new List<string>());
 
         var result = await _controller.Register(dto);
 
@@ -32,11 +32,13 @@ public class AuthControllerTests
     public async Task Register_WhenFails_ReturnsBadRequest()
     {
         var dto = new RegisterDto { Email = "test@test.com", UserName = "testuser", Password = "Pass1!" };
-        _mockService.Setup(s => s.Register(dto)).ReturnsAsync(false);
+        var errors = new List<string> { "Error message" };
+        _mockService.Setup(s => s.Register(dto)).ReturnsAsync(errors);
 
         var result = await _controller.Register(dto);
 
-        Assert.IsType<BadRequestResult>(result);
+        var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(errors, badRequest.Value);
     }
 
     [Fact]
@@ -60,6 +62,6 @@ public class AuthControllerTests
 
         var result = await _controller.Login(dto);
 
-        Assert.IsType<UnauthorizedResult>(result);
+        Assert.IsType<UnauthorizedObjectResult>(result);
     }
 }
