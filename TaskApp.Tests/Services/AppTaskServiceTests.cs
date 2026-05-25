@@ -188,4 +188,169 @@ public class AppTaskServiceTests
 
         _mockRepo.Verify(r => r.Delete(It.IsAny<int>()), Times.Never);
     }
+
+    [Fact]
+    public async Task BulkDelete_WhenRepositoryThrows_WrapsException()
+    {
+        _mockRepo.Setup(r => r.GetAllByUserId("user1")).ThrowsAsync(new Exception("DB error"));
+
+        var ex = await Assert.ThrowsAsync<Exception>(() => _service.BulkDelete("user1"));
+        Assert.Contains("Error deleting all tasks", ex.Message);
+    }
+
+    [Fact]
+    public async Task CreateTask_WhenRepositoryThrows_WrapsException()
+    {
+        _mockRepo.Setup(r => r.Add(It.IsAny<AppTask>())).ThrowsAsync(new Exception("DB error"));
+
+        var ex = await Assert.ThrowsAsync<Exception>(() => _service.CreateTask(new CreateAppTaskDto { Title = "T" }, "user1"));
+        Assert.Contains("Error creating", ex.Message);
+    }
+
+    [Fact]
+    public async Task DeleteTask_WhenRepositoryThrows_WrapsException()
+    {
+        _mockRepo.Setup(r => r.Delete(1)).ThrowsAsync(new Exception("DB error"));
+
+        var ex = await Assert.ThrowsAsync<Exception>(() => _service.DeleteTask(1));
+        Assert.Contains("Error deleting the task", ex.Message);
+    }
+
+    [Fact]
+    public async Task UpdateTask_WhenRepositoryThrows_WrapsException()
+    {
+        _mockRepo.Setup(r => r.GetById(1)).ThrowsAsync(new Exception("DB error"));
+
+        var ex = await Assert.ThrowsAsync<Exception>(() => _service.UpdateTask(new UpdateAppTaskDto { Title = "T" }, 1));
+        Assert.Contains("Error updating the task", ex.Message);
+    }
+
+    [Fact]
+    public async Task UpdateTask_WhenDescriptionNotNull_UpdatesDescription()
+    {
+        var task = BuildTask(1);
+        _mockRepo.Setup(r => r.GetById(1)).ReturnsAsync(task);
+
+        await _service.UpdateTask(new UpdateAppTaskDto { Description = "New desc" }, 1);
+
+        _mockRepo.Verify(r => r.Update(It.Is<AppTask>(t => t.Description == "New desc")), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdateTask_WhenDueDateNotNull_UpdatesDueDate()
+    {
+        var task = BuildTask(1);
+        var newDate = DateTime.Today.AddDays(3);
+        _mockRepo.Setup(r => r.GetById(1)).ReturnsAsync(task);
+
+        await _service.UpdateTask(new UpdateAppTaskDto { DueDate = newDate }, 1);
+
+        _mockRepo.Verify(r => r.Update(It.Is<AppTask>(t => t.DueDate == newDate)), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetAllTask_WhenTaskHasCategory_MapsCategoryName()
+    {
+        var task = BuildTask(1);
+        task.CategoryId = 2;
+        task.Category = new TaskApp.Domain.Entities.Category { Id = 2, Name = "Work", UserId = "user1" };
+        _mockRepo.Setup(r => r.GetAllByUserId("user1")).ReturnsAsync(new List<AppTask> { task });
+
+        var result = await _service.GetAllTask("user1");
+
+        Assert.Equal("Work", result.First().CategoryName);
+    }
+
+    [Fact]
+    public async Task GetAllTask_WhenTaskHasSubTasksAndTags_MapsCollections()
+    {
+        var task = BuildTask(1);
+        task.SubTasks = [new TaskApp.Domain.Entities.SubTask { Title = "Step 1", TaskId = 1 }];
+        task.Tags = [new TaskApp.Domain.Entities.Tag { Name = "Urgent", UserId = "user1" }];
+        _mockRepo.Setup(r => r.GetAllByUserId("user1")).ReturnsAsync(new List<AppTask> { task });
+
+        var result = await _service.GetAllTask("user1");
+        var dto = result.First();
+
+        Assert.Equal("Step 1", dto.SubTask.First());
+        Assert.Equal("Urgent", dto.Tags.First());
+    }
+
+    [Fact]
+    public async Task GetTaskById_WhenTaskHasCategory_MapsCategoryName()
+    {
+        var task = BuildTask(1);
+        task.CategoryId = 3;
+        task.Category = new TaskApp.Domain.Entities.Category { Id = 3, Name = "Health", UserId = "user1" };
+        _mockRepo.Setup(r => r.GetTaskById(1)).ReturnsAsync(task);
+
+        var result = await _service.GetTaskById(1);
+
+        Assert.Equal("Health", result!.CategoryName);
+    }
+
+    [Fact]
+    public async Task GetTaskById_WhenTaskHasSubTasksAndTags_MapsCollections()
+    {
+        var task = BuildTask(1);
+        task.SubTasks = [new TaskApp.Domain.Entities.SubTask { Title = "Do it", TaskId = 1 }];
+        task.Tags = [new TaskApp.Domain.Entities.Tag { Name = "Bug", UserId = "user1" }];
+        _mockRepo.Setup(r => r.GetTaskById(1)).ReturnsAsync(task);
+
+        var result = await _service.GetTaskById(1);
+
+        Assert.Equal("Do it", result!.SubTask.First());
+        Assert.Equal("Bug", result.Tags.First());
+    }
+
+    [Fact]
+    public async Task CreateTask_WhenTaskHasSubTasksAndTags_MapsCollections()
+    {
+        var dto = new CreateAppTaskDto { Title = "Task" };
+        AppTask? captured = null;
+        _mockRepo
+            .Setup(r => r.Add(It.IsAny<AppTask>()))
+            .Callback<AppTask>(t =>
+            {
+                t.SubTasks = [new TaskApp.Domain.Entities.SubTask { Title = "Sub", TaskId = 1 }];
+                t.Tags = [new TaskApp.Domain.Entities.Tag { Name = "Tag", UserId = "user1" }];
+                captured = t;
+            });
+
+        var result = await _service.CreateTask(dto, "user1");
+
+        Assert.Equal("Sub", result.SubTask.First());
+        Assert.Equal("Tag", result.Tags.First());
+    }
+
+    [Fact]
+    public void CreateAppTaskDto_AllPropertiesAreSettable()
+    {
+        var dto = new CreateAppTaskDto
+        {
+            Title = "T",
+            Description = "D",
+            DueDate = DateTime.Today,
+            CategoryId = 7
+        };
+        Assert.Equal(7, dto.CategoryId);
+    }
+
+    [Fact]
+    public void UpdateAppTaskDto_AllPropertiesAreSettable()
+    {
+        var dto = new UpdateAppTaskDto
+        {
+            Title = "T",
+            Description = "D",
+            DueDate = DateTime.Today,
+            Status = TaskStatus.InProgress,
+            CategoryId = 4,
+            SubTasks = ["s1"],
+            Tags = ["t1"]
+        };
+        Assert.Equal(4, dto.CategoryId);
+        Assert.Single(dto.SubTasks!);
+        Assert.Single(dto.Tags!);
+    }
 }
