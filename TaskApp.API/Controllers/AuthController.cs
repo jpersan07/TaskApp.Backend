@@ -19,10 +19,11 @@ namespace TaskApp.API.Controllers
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto register)
     {
-      if(await _service.Register(register))
+      var errors = await _service.Register(register);
+      if (!errors.Any())
         return Ok();
       else
-        return BadRequest();
+        return BadRequest(errors);
     }
 
     /// <summary>

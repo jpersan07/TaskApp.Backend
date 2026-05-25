@@ -5,5 +5,5 @@ namespace TaskApp.Application.Services;
 public interface IAuthService
 {
   public Task<AuthResponseDto> Login(LoginDto login);
-  public Task<bool> Register(RegisterDto register);
+  public Task<IEnumerable<string>> Register(RegisterDto register);
 }
