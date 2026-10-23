@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Remove-Item \"TaskApp.Application\\\\Services\\\\AppTaskService.cs\")",
+      "Bash(git merge *)",
+      "Bash(rm *)",
+      "Bash(New-Item *)",
+      "PowerShell(New-Item *)",
+      "Bash(gh pr *)",
+      "PowerShell(gh pr *)",
+      "Bash(git checkout *)",
+      "Bash(git pull *)",
+      "Bash(git branch *)",
+      "PowerShell(dotnet remove TaskApp.API/TaskApp.API.csproj package Microsoft.OpenApi; dotnet add TaskApp.API/TaskApp.API.csproj package Microsoft.OpenApi --version 2.4.1)",
+      "PowerShell(dotnet remove *)",
+      "WebFetch(domain:stackoverflow.com)",
+      "Bash(dotnet add *)",
+      "Bash(dotnet build *)",
+      "Bash(git *)",
+      "WebSearch",
+      "Bash(dotnet restore *)",
+      "Bash(dotnet test *)",
+      "Bash(xargs ls)",
+      "Read(//home/rubiales/.nuget/packages/microsoft.entityframeworkcore.inmemory/**)",
+      "Read(//home/rubiales/.nuget/packages/microsoft.entityframeworkcore/**)",
+      "Bash(dotnet tool *)",
+      "Bash(python3 *)",
+      "Bash(reportgenerator *)",
+      "Bash(xdg-open *)"
+    ]
+  }
+}
