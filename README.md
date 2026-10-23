@@ -97,6 +97,8 @@ En Swagger se hace lo mismo con el botón **Authorize**: pega el token y todas l
 
 ### Endpoints
 
+![Mapa de endpoints de la API de TaskApp](docs/endpoints.svg)
+
 | Recurso | Ruta base | Operaciones |
 |---|---|---|
 | Autenticación | `/api/auth` | `POST register`, `POST login` |
