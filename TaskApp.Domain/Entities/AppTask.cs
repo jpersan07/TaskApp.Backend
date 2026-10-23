@@ -9,7 +9,7 @@ public class AppTask
   public string Title { get; set; } = string.Empty;
   public string? Description { get; set; }
   public DateTime? DueDate { get; set; }
-  public TaskStatus Status { get; set; } = TaskStatus.NonStarted;
+  public TaskStatus? Status { get; set; } = TaskStatus.NonStarted;
   public string UserId { get; set; } = string.Empty;
   public AppUser User { get; set; } = null!;
   public int? CategoryId { get; set; }

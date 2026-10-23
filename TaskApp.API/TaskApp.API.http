@@ -1,6 +1,39 @@
-@TaskApp.API_HostAddress = http://localhost:5218
+@TaskApp.API_HostAddress = http://localhost:5218/api/apptask
 
-GET {{TaskApp.API_HostAddress}}/weatherforecast/
+###
+
+GET {{TaskApp.API_HostAddress}}
 Accept: application/json
 
 ###
+
+POST {{TaskApp.API_HostAddress}}
+  Content-Type: application/json
+
+  {
+    "title": "Mi primera tarea",
+    "description": "Descripción de prueba",
+    "dueDate": "2026-06-01"
+  }
+
+###
+
+  POST http://localhost:5218/api/auth/register
+  Content-Type: application/json
+
+  {
+    "email": "test@test.com",
+    "userName": "testuser",
+    "password": "Test1234!"
+  }
+
+###
+
+  POST http://localhost:5218/api/auth/login
+  Content-Type: application/json
+
+  {
+    "email": "test@test.com",
+    "userName": "testuser",
+    "password": "Test1234!"
+  }
